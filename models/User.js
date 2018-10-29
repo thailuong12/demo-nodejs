@@ -42,6 +42,10 @@ userSchema.methods.comparePassword = function comparePassword(candidatePassword,
   });
 };
 
+userSchema.methods.test = function test(a) {
+  console.log(a);
+};
+
 /**
  * Helper method for getting user's gravatar.
  */

@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  .container
+      button.btn.btn-danger(type='button')
+        i.fa.fa-user-times
+        | Delete Checked Contacts
+      table.table.table-striped.table-dark
+        thead
+          tr
+            th(scope='col') #
+            th(scope='col') First Name
+            th(scope='col') Last Name
+            th(scope='col') DOB
+            th(scope='col') Gender
+        tbody
+          tr
+            th(scope='row')
+              input(type='checkbox')
+            td Mark
+            td Otto
+            td @mdo
+            td @mdo
+      a.btn.btn-primary(href='/contact/add', role='button')
+        i.fa.fa-user-plus
+        | Add A Contact
+        
+      button.btn.btn-primary(type='button')
+        i.fa.fa-upload
+        | Import From .csv File
+      button.btn.btn-primary(type='button')
+        i.fa.fa-file-excel-o
+        | Export Contacts

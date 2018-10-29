@@ -1,0 +1,51 @@
+extends ../layout
+
+block content
+  .container
+    .pb-2.mt-2.mb-4.border-bottom
+        h3 Create A Contact
+    form(id='contact-form', method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group.row
+          label.col-md-3.col-form-label.font-weight-bold.text-right(for='firstName') First Name
+          .col-md-7
+            input.form-control(name='firstName', id='firstName', placeholder='First Name', autofocus, autocomplete='firstName', required)
+        .form-group.row
+          label.col-md-3.col-form-label.font-weight-bold.text-right(for='Last Name') Last Name
+          .col-md-7
+            input.form-control(name='lastName', id='lastName', placeholder='Last Name', autocomplete='new-lastName', required)
+        .form-group.row
+          label.col-md-3.col-form-label.font-weight-bold.text-right(for='middleName') Middle Name
+          .col-md-7
+            input.form-control(name='middleName', id='middleName', placeholder='Middle Name', required)
+        .form-group.row
+          label.col-md-3.col-form-label.font-weight-bold.text-right(for='middleName') Gender
+          .col-md-7
+                .form-check.form-check-inline
+                    input#inlineRadio1.form-check-input(type='radio', name='gender', value='male')
+                    label.form-check-label(for='Male') Male
+                .form-check.form-check-inline
+                    input#inlineRadio2.form-check-input(type='radio', name='gender', value='female')
+                    label.form-check-label(for='Female') Female
+        .form-group.row
+          label.col-md-3.col-form-label.font-weight-bold.text-right(for='directManager') Direct Manager
+          .col-md-7
+            select.form-control(id= "selectManager", name = "manager")
+                option 1
+                option 2
+                option 3
+                option 4
+                option 5
+        .form-group.row
+          label.col-md-3.col-form-label.font-weight-bold.text-right(for='dob') DOB
+          .col-md-7
+            input.form-control(type = "date", name='dob', id='dob', placeholder='Day Of Birth', required)
+        .form-group.row
+          label.col-md-3.col-form-label.font-weight-bold.text-right(for='middleName') Start Date
+          .col-md-7
+            input.form-control(type = "date", name='startDate', id='startDate', placeholder='Start Date', required)  
+ 
+        .form-group.offset-sm-3.col-md-7.pl-2
+        button.btn.btn-success(type='submit', id ="btnCreateContact")
+            i.fas.fa-user-plus.fa-sm
+            | Create
