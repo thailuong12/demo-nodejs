@@ -12,7 +12,7 @@ exports.getAllContacts = async (req, res) => {
     res.status(500).redirect('/contact/add');
     return;
   }
-  res.render('contact/contact-list', findAllRes);
+  res.render('contact/contact-list', { listContact: findAllRes });
 };
 
 exports.getAddContact = (req, res) => {
@@ -33,13 +33,16 @@ const validateAddData = (firstName, lastName, middleName, gender, manager, dob, 
 };
 
 exports.postAddContact = async (req, res) => {
-  const { firstName, lastName, middleName, gender, manager, dob, startDate } = req.body;
+  const {
+    firstName, lastName, middleName, gender, manager, dob, startDate
+  } = req.body;
   const validateRes = validateAddData(firstName, lastName, middleName, gender, manager, dob, startDate);
   if (!validateRes) {
     req.flash('errors', { msg: 'Create the contact unsuccessfully, invalid inputs' });
     res.status(400).redirect('/contact/add');
     return;
   }
+  console.log('req.user', req.user);
   const contactData = {
     firstName,
     lastName,

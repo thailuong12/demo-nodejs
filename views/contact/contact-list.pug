@@ -13,14 +13,19 @@ block content
             th(scope='col') Last Name
             th(scope='col') DOB
             th(scope='col') Gender
+            th(scope='col') 
         tbody
+        each contact in listContact
+          - const { firstName, lastName, dob, gender} = contact
           tr
             th(scope='row')
               input(type='checkbox')
-            td Mark
-            td Otto
-            td @mdo
-            td @mdo
+            td #{firstName}
+            td #{lastName}
+            td #{dob}
+            td #{gender}
+            td 
+              a.btn.btn-primary(href='#', role='button')
       a.btn.btn-primary(href='/contact/add', role='button')
         i.fa.fa-user-plus
         | Add A Contact
