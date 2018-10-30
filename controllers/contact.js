@@ -1,6 +1,6 @@
 
 const Contact = require('../models/Contact');
-
+const _ = require('lodash')
 /**
  * GET /contact
  * Contact form page.
@@ -12,45 +12,75 @@ exports.getAllContacts = async (req, res) => {
     res.status(500).redirect('/contact/add');
     return;
   }
-  res.render('contact/contact-list', { listContact: findAllRes });
+  const userId = req.user._id;
+  res.render('contact/contact-list', { listContact: findAllRes, Owner: userId });
 };
 
-exports.getAddContact = (req, res) => {
-  res.render('contact/add-contact', {});
+exports.getAddContact = async (req, res) => {
+  const allContact = await Contact.getAllContacts();
+  res.render('contact/add-contact', { allContact });
 };
 
-const validateAddData = (firstName, lastName, middleName, gender, manager, dob, startDate) => {
-  if (!firstName || !lastName || !middleName || !gender || !manager || !dob || !startDate) {
-    return false;
+exports.deleteContacts = async (req, res) => {
+  const { listContactNeedToBeDelete } = req.body;
+  for (contactId of listContactNeedToBeDelete) {
+    try {
+      await Contact.deleteContact(contactId);
+    } catch (ex) {
+      console.log('Delete errors')
+    }
+  }
+  return res.status(200).json({ msg: 'delete successfully!' });
+};
+const validateAddData = (addReq) => {
+  const {
+    firstName, lastName, middleName, gender, dob, startDate
+  } = addReq.body;
+
+  if (!firstName || !lastName || !middleName || !gender || !dob || !startDate) {
+    return;
+  }
+
+  addReq.assert('firstName', 'Fisrt Name cannot longger than 10 characters').isLength({ min: 1, max: 10 });
+  addReq.assert('lastName', 'Last Name cannot be blank').isLength({ min: 1, max: 10 });
+  addReq.assert('middleName', 'Middle cannot be blank').isLength({ max: 10 });
+  addReq.assert('gender', 'FisrtName cannot be blank').isBoolean();
+
+  const errors = addReq.validationErrors();
+  if (errors) {
+    console.log('err', errors);
+    return;
   }
   const nowYear = (new Date()).getFullYear();
   const dateOfBirthYear = new Date(dob).getFullYear();
 
   if ((nowYear - dateOfBirthYear) < 22) {
-    return false;
+    return;
   }
   return true;
 };
 
 exports.postAddContact = async (req, res) => {
-  const {
-    firstName, lastName, middleName, gender, manager, dob, startDate
-  } = req.body;
-  const validateRes = validateAddData(firstName, lastName, middleName, gender, manager, dob, startDate);
+  const validateRes = validateAddData(req);
   if (!validateRes) {
     req.flash('errors', { msg: 'Create the contact unsuccessfully, invalid inputs' });
     res.status(400).redirect('/contact/add');
     return;
   }
-  console.log('req.user', req.user);
+  const {
+    firstName, lastName, middleName, gender, directManager, dob, startDate
+  } = req.body;
+  console.log(req.body);
+  const userId = req.user._id;
   const contactData = {
+    userId,
     firstName,
     lastName,
     middleName,
     gender,
-    manager,
+    directManager,
     dob,
-    startDate
+    startDate,
   };
   const createRes = await Contact.createContact(contactData);
   if (!createRes) {
@@ -58,6 +88,18 @@ exports.postAddContact = async (req, res) => {
     res.status(500).redirect('/contact/add');
     return;
   }
-  console.log(createRes);
   res.status(200).redirect('/contact');
+};
+
+exports.editContact = async (req, res) => {
+  const { id } = req.query;
+  const contact = await Contact.getContactById(id);
+  const allContact = await Contact.getAllContacts();
+  if (!contact) {
+    return res.status(204).json({
+      msg: 'data not found'
+    });
+  }
+  console.log(contact);
+  return res.render('contact/edit-contact', { contact, allContact });
 };

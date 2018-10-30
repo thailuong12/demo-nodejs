@@ -5,10 +5,10 @@ const contactSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     middleName: String,
-    gender: String,
+    gender: Boolean,
     directManager: String,
     dob: String,
-    startDate: String
+    startDate: String,
 });
 
 const Contact = mongoose.model('Contact', contactSchema);
@@ -30,6 +30,28 @@ module.exports.getAllContacts = () => {
                 reject(err);
             }
             resolve(contacts);
+        });
+    });
+};
+
+module.exports.deleteContact = (id) => {
+    return new Promise((resolve, reject) => {
+        Contact.findByIdAndRemove({ _id: id }, (err, res) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(res);
+        });
+    });
+};
+
+module.exports.getContactById = (id) => {
+    return new Promise((resolve, reject) => {
+        Contact.findOne({ _id: id }, (err, contact) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(contact);
         });
     });
 };

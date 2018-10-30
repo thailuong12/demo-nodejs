@@ -106,7 +106,10 @@ app.use((req, res, next) => {
     && !req.path.match(/^\/auth/)
     && !req.path.match(/\./)) {
     req.session.returnTo = req.originalUrl;
-  } else if (req.user
+    res.redirect('/login');
+    return;
+  }
+  if (req.user
     && (req.path === '/account' || req.path.match(/^\/api/))) {
     req.session.returnTo = req.originalUrl;
   }
@@ -134,7 +137,8 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/contact/add', contactController.getAddContact);
 app.post('/contact/add', contactController.postAddContact);
-
+app.delete('/contact/delete', contactController.deleteContacts);
+app.get('/contact/edit', contactController.editContact);
 
 /**
  * Error Handler.

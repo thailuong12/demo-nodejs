@@ -5,19 +5,20 @@ block content
     .pb-2.mt-2.mb-4.border-bottom
         h3 Create A Contact
     form(id='contact-form', method='POST')
+        - const {_id, userId,firstName, lastName, dob, gender, directManager, middleName} = contact
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group.row
           label.col-md-3.col-form-label.font-weight-bold.text-right(for='firstName') First Name
           .col-md-7
-            input.form-control(name='firstName', id='firstName', placeholder='First Name', autofocus, autocomplete='firstName',maxlength ='10' , required)
+            input.form-control(value = firstName , name='firstName', id='firstName', placeholder='First Name', autofocus, autocomplete='firstName',maxlength ='10' , required)
         .form-group.row
           label.col-md-3.col-form-label.font-weight-bold.text-right(for='Last Name') Last Name
           .col-md-7
-            input.form-control(name='lastName', id='lastName', placeholder='Last Name', autocomplete='new-lastName',maxlength ='10' , required)
+            input.form-control(value = lastName, name='lastName', id='lastName', placeholder='Last Name', autocomplete='new-lastName',maxlength ='10' , required)
         .form-group.row
           label.col-md-3.col-form-label.font-weight-bold.text-right(for='middleName') Middle Name
           .col-md-7
-            input.form-control(name='middleName', id='middleName', placeholder='Middle Name',maxlength ='10')
+            input.form-control(value = middleName, name='middleName', id='middleName', placeholder='Middle Name',maxlength ='10')
         .form-group.row
           label.col-md-3.col-form-label.font-weight-bold.text-right(for='middleName') Gender
           .col-md-7
