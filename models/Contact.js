@@ -14,12 +14,25 @@ const contactSchema = new mongoose.Schema({
 const Contact = mongoose.model('Contact', contactSchema);
 module.exports.createContact = (contactData) => {
     return new Promise((resolve, reject) => {
-        Contact.create(contactData, (err, contact) => {
-            if (err) {
-                reject(err);
-            }
-            resolve(contact);
-        });
+        const {
+            firstName, lastName, middleName, gender, directManager, dob, startDate, userId
+        } = contactData;
+        Contact.create(
+            {
+                userId,
+                firstName,
+                lastName,
+                middleName,
+                gender,
+                directManager,
+                dob,
+                startDate,
+            }, (err, contact) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(contact);
+            });
     });
 };
 
@@ -53,5 +66,16 @@ module.exports.getContactById = (id) => {
             }
             resolve(contact);
         });
+    });
+};
+
+module.exports.updateContactById = (id, updateData) => {
+    return new Promise((resolve, reject) => {
+        Contact.findByIdAndUpdate({ _id: id }, updateData, (err, res) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(res);
+        })
     });
 };

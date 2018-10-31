@@ -1,16 +1,18 @@
 extends ../layout
 
 block content
-  .container
     .pb-2.mt-2.mb-4.border-bottom
-        h3 Create A Contact
+        h3 Update Contact Information
     form(id='contact-form', method='POST')
-        - const {_id, userId,firstName, lastName, dob, gender, directManager, middleName} = contact
+        - const {_id, userId, firstName, lastName, dob, gender, directManager, middleName, startDate} = contact
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group.row
-          label.col-md-3.col-form-label.font-weight-bold.text-right(for='firstName') First Name
+          label.col-md-3.col-form-label.font-weight-bold.text-right(for='firstName') First Name 
           .col-md-7
             input.form-control(value = firstName , name='firstName', id='firstName', placeholder='First Name', autofocus, autocomplete='firstName',maxlength ='10' , required)
+          .col-md-7
+            input.form-control(value = userId , name='owner', id='owner', hidden)
+            input.form-control(value = _id , name='id', id='id', hidden)
         .form-group.row
           label.col-md-3.col-form-label.font-weight-bold.text-right(for='Last Name') Last Name
           .col-md-7
@@ -23,27 +25,46 @@ block content
           label.col-md-3.col-form-label.font-weight-bold.text-right(for='middleName') Gender
           .col-md-7
                 .form-check.form-check-inline
+                  if gender
+                    input#inlineRadio1.form-check-input(type='radio', name='gender', value='true', checked)
+                    label.form-check-label(for='Male') Male
+                  else 
                     input#inlineRadio1.form-check-input(type='radio', name='gender', value='true')
                     label.form-check-label(for='Male') Male
                 .form-check.form-check-inline
+                  if !gender
+                    input#inlineRadio2.form-check-input(type='radio', name='gender', value='false', checked)
+                    label.form-check-label(for='Female') Female
+                  else
                     input#inlineRadio2.form-check-input(type='radio', name='gender', value='false')
                     label.form-check-label(for='Female') Female
         .form-group.row
           label.col-md-3.col-form-label.font-weight-bold.text-right(for='directManager') Direct Manager
           .col-md-7
-            select.form-control(id= "selectManager", name = "directManager")
+            select.form-control(name = "directManager")
               each contact in allContact
-                option(value = contact._id) #{contact.firstName} #{contact.lastName}
+                if JSON.stringify(_id) !== JSON.stringify(contact._id)
+                  if JSON.stringify(directManager) !== JSON.stringify(contact._id)
+                    option(value = contact._id) #{contact.firstName} #{contact.lastName}
+                  else 
+                    - console.log('asdasdasd')
+                    option(value = contact._id, selected) #{contact.firstName} #{contact.lastName}
         .form-group.row
           label.col-md-3.col-form-label.font-weight-bold.text-right(for='dob') DOB
           .col-md-7
-            input.form-control(type = "date", name='dob', id='dob', placeholder='Day Of Birth', required)
+            input.form-control(type = "date",value = dob , name='dob', id='dob', placeholder='Day Of Birth', required)
         .form-group.row
           label.col-md-3.col-form-label.font-weight-bold.text-right(for='middleName') Start Date
           .col-md-7
-            input.form-control(type = "date", name='startDate', id='startDate', placeholder='Start Date', required)  
+            input.form-control(type = "date",value = startDate , name='startDate', id='startDate', placeholder='Start Date', required)  
  
         .form-group.offset-sm-3.col-md-7.pl-2
-        button.btn.btn-success(type='submit', id ="btnCreateContact")
-            i.fas.fa-user-plus.fa-sm
-            | Create
+        if JSON.stringify(owner) === JSON.stringify(userId)
+          button.btn.btn-success(type='submit', id ="btnUpdateContact")
+              i.fa.fa-pencil-square-o
+              | Save
+        else 
+          button.btn.btn-success(type='submit', id ="btnUpdateContact", disabled)
+              i.fa.fa-pencil-square-o
+              | Save
+          a.inform This is not your created contact.

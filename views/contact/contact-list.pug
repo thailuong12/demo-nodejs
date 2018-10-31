@@ -1,7 +1,6 @@
 extends ../layout
 
 block content
-  .container
       button.btn.btn-danger(type='button', id='deleteContacts')
         i.fa.fa-user-times
         | Delete Checked Contacts
@@ -23,18 +22,19 @@ block content
                 input(type='checkbox', id=_id)
             td #{firstName}
             td #{lastName}
-            td #{_id}
+            td #{dob}
             td #{gender? 'Male': 'Female'}
             td 
               - const url = '/contact/edit?id='+ _id
               a.btn.btn-primary(href= url, role='button') Detail/Edit
-      a.btn.btn-primary(href='/contact/add', role='button')
+      a.btn.btn-primary.ulti(href='/contact/add', role='button')
         i.fa.fa-user-plus
         | Add A Contact
-        
-      button.btn.btn-primary(type='button')
-        i.fa.fa-upload
-        | Import From .csv File
-      button.btn.btn-primary(type='button')
-        i.fa.fa-file-excel-o
+      .upload-btn-wrapper
+        button.btn-upload 
+          i.fa.fa-file-excel-o 
+          | Upload A File
+        input(name='myfile', type='file', id="fileImport")
+      a.btn.btn-primary.ulti(href='/contact/export', role='button')
+        i.fa.fa-download
         | Export Contacts

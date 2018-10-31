@@ -18,7 +18,7 @@ const passport = require('passport');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
-
+const multer = require('multer');
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
@@ -120,6 +120,7 @@ app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/popper.js/d
 app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js'), { maxAge: 31557600000 }));
 app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/jquery/dist'), { maxAge: 31557600000 }));
 app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: 31557600000 }));
+const upload = multer();
 
 /**
  * Primary app routes.
@@ -138,7 +139,10 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/contact/add', contactController.getAddContact);
 app.post('/contact/add', contactController.postAddContact);
 app.delete('/contact/delete', contactController.deleteContacts);
-app.get('/contact/edit', contactController.editContact);
+app.get('/contact/edit', contactController.getEditContact);
+app.post('/contact/edit', contactController.postEditContact);
+app.get('/contact/export', contactController.exportContacts);
+app.post('/contact/import', upload.single('file'), contactController.importContacts);
 
 /**
  * Error Handler.

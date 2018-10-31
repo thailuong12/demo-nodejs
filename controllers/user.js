@@ -41,7 +41,7 @@ exports.postLogin = (req, res, next) => {
       if (err) { return next(err); }
       console.log('req.session', req.session);
       req.flash('success', { msg: 'Success! You are logged in.' });
-      res.redirect(req.session.returnTo || '/');
+      res.redirect('/contact');
     });
   })(req, res, next);
 };
