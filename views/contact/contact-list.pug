@@ -4,6 +4,12 @@ block content
       button.btn.btn-danger(type='button', id='deleteContacts')
         i.fa.fa-user-times
         | Delete Checked Contacts
+      .search
+      form(method="POST", action="/contact/searchbyfullname")
+        .col-md-7
+          input.form-control(type="text", id="searchInput", name="searchInput")
+          input.btn.btn-success(type="submit" value="Search")
+          input(type='hidden', name='_csrf', value=_csrf)
       table.table.table-striped.table-dark
         thead
           tr

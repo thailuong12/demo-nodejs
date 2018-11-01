@@ -40,4 +40,18 @@ $(document).ready(() => {
     }
     return false;
   });
+  // $('#searchInput').keypress((e) => {
+  //   var key = e.which;
+  //   if (key == 13)  // the enter key code
+  //   {
+  //     const token = document.getElementById('csrf').getAttribute('value');
+  //     $.ajax({
+  //       type: 'GET',
+  //       url: `/contact/searchbyfullname?firstName=name1&lastName=amead`,
+  //       headers: {
+  //         'X-CSRF-Token': token
+  //       },
+  //     });
+  //   }
+  // });
 });

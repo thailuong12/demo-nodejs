@@ -143,6 +143,7 @@ app.get('/contact/edit', contactController.getEditContact);
 app.post('/contact/edit', contactController.postEditContact);
 app.get('/contact/export', contactController.exportContacts);
 app.post('/contact/import', upload.single('file'), contactController.importContacts);
+app.post('/contact/searchbyfullname', contactController.getContactByFullName);
 app.get('*', contactController.getAllContacts);
 /**
  * Error Handler.

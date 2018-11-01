@@ -23,7 +23,7 @@ exports.getAllContacts = async (req, res) => {
     return res.render('contact/contact-list', { listContact: findAllRes, Owner: userId });
   } catch (ex) {
     const error = {
-      code: 500, 
+      code: 500,
       message: `Internal Server Error: ${ex}`
     }
     res.status(500);
@@ -306,7 +306,7 @@ exports.importContacts = async (req, res) => {
       const error = {
         code: 403,
         message: 'Forbidden',
-      } 
+      }
       res.status(403);
       res.render('error', error);
       return;
@@ -335,3 +335,47 @@ exports.importContacts = async (req, res) => {
     res.render('error', error);
   }
 };
+
+exports.getContactByFullName = async (req, res) => {
+  try {
+    console.log('getContactByFullName')
+    if (!req || !req.user) {
+      const error = {
+        code: 403,
+        message: 'Forbidden',
+      }
+      res.status(403);
+      return res.render('error', error);
+    }
+    const { searchInput } = req.body
+    console.log('firstnamae', searchInput)
+    const nameArray = searchInput.split(" ");
+    const userId = req.user._id;
+    if(!searchInput || nameArray.length < 2) {
+      return res.redirect('/contact')
+    }
+    if (nameArray.length === 2) {
+      const contact = await Contact.findByFullName(nameArray[0], nameArray[1]);
+      if (contact) {
+        console.log('have contact')
+        // res.status(200).redirect('/contact/add')
+        return res.render('contact/contact-list', { listContact: contact, Owner: userId });
+      }
+    }
+    
+
+
+
+    res.status(200).json({
+      msg: 'a'
+    })
+
+  } catch (ex) {
+    const error = {
+      code: 500,
+      message: `Internal Server Error: ${ex}`
+    }
+    res.status(500);
+    return res.render('error', error);
+  }
+}

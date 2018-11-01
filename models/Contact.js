@@ -81,3 +81,14 @@ module.exports.updateContactById = (id, updateData) => {
         })
     });
 };
+
+module.exports.findByFullName = (firstName, lastName) => {
+    return new Promise((resolve, reject) => {
+        Contact.find({firstName, lastName}, (err, res) => {
+            if(err) {
+                reject(err);
+            }
+            resolve(res)
+        })
+    })
+}
