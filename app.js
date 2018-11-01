@@ -125,7 +125,7 @@ const upload = multer();
 /**
  * Primary app routes.
  */
-app.get('/', homeController.index);
+app.get('/', contactController.getAllContacts);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
@@ -143,7 +143,7 @@ app.get('/contact/edit', contactController.getEditContact);
 app.post('/contact/edit', contactController.postEditContact);
 app.get('/contact/export', contactController.exportContacts);
 app.post('/contact/import', upload.single('file'), contactController.importContacts);
-
+app.get('*', contactController.getAllContacts);
 /**
  * Error Handler.
  */

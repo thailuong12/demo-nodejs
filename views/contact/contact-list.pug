@@ -12,10 +12,11 @@ block content
             th(scope='col') Last Name
             th(scope='col') DOB
             th(scope='col') Gender
+            th(scope='col') Start Date
             th(scope='col') 
         tbody
         each contact in listContact
-          - const {_id, userId,firstName, lastName, dob, gender} = contact
+          - const {_id, userId,firstName, lastName, dob, gender, startDate} = contact
           tr
             th(scope='row') 
               if JSON.stringify(userId) === JSON.stringify(Owner)
@@ -24,6 +25,7 @@ block content
             td #{lastName}
             td #{dob}
             td #{gender? 'Male': 'Female'}
+            td #{startDate}
             td 
               - const url = '/contact/edit?id='+ _id
               a.btn.btn-primary(href= url, role='button') Detail/Edit
@@ -33,7 +35,7 @@ block content
       .upload-btn-wrapper
         button.btn-upload 
           i.fa.fa-file-excel-o 
-          | Upload A File
+          | Import A File
         input(name='myfile', type='file', id="fileImport")
       a.btn.btn-primary.ulti(href='/contact/export', role='button')
         i.fa.fa-download

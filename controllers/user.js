@@ -5,10 +5,11 @@ const User = require('../models/User');
  * GET /login
  * Login page.
  */
-exports.getLogin = (req, res) => {
+exports.getLogin = async (req, res) => {
   if (req.user) {
     return res.redirect('/');
   }
+  res.status(200);
   res.render('account/login', {
     title: 'Login'
   });
@@ -64,12 +65,20 @@ exports.logout = (req, res) => {
  * Signup page.
  */
 exports.getSignup = (req, res) => {
-  if (req.user) {
-    return res.redirect('/');
+  try {
+    if (req.user) {
+      console.log('sadasd')
+      return res.redirect('/');
+    }
+    console.log('@@@@@')
+    res.status(201)
+    res.render('account/signup', {
+      title: 'Create Account'
+    });
+  } catch (ex) {
+    console.log('exxxx')
   }
-  res.render('account/signup', {
-    title: 'Create Account'
-  });
+ 
 };
 
 /**

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const contactSchema = new mongoose.Schema({
     userId: String,
     firstName: String,
@@ -12,6 +11,7 @@ const contactSchema = new mongoose.Schema({
 });
 
 const Contact = mongoose.model('Contact', contactSchema);
+
 module.exports.createContact = (contactData) => {
     return new Promise((resolve, reject) => {
         const {
@@ -71,10 +71,12 @@ module.exports.getContactById = (id) => {
 
 module.exports.updateContactById = (id, updateData) => {
     return new Promise((resolve, reject) => {
-        Contact.findByIdAndUpdate({ _id: id }, updateData, (err, res) => {
+        Contact.findByIdAndUpdate({ _id: id }, updateData,{new: true} ,(err, res) => {
             if (err) {
+                console.log('err', err);
                 reject(err);
             }
+            console.log('res', res);
             resolve(res);
         })
     });

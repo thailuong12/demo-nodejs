@@ -24,7 +24,6 @@ $(document).ready(() => {
       });
     }
   });
-
   $('#fileImport').change(() => {
     const token = document.getElementById('csrf').getAttribute('value');
     const fileInput = document.getElementById('fileImport');
