@@ -7,6 +7,15 @@ const Contact = require('../models/Contact');
  * Contact form page.
  */
 
+const render500ErrorPage = (ex, res) => {
+  const error = {
+    code: 500,
+    message: `Internal Server Error: ${ex}`
+  }
+  res.status(500);
+  return res.render('error', error);
+}
+
 exports.getAllContacts = async (req, res) => {
   try {
     if (!req || !req.user) {
@@ -22,12 +31,7 @@ exports.getAllContacts = async (req, res) => {
     res.status(200)
     return res.render('contact/contact-list', { listContact: findAllRes, Owner: userId });
   } catch (ex) {
-    const error = {
-      code: 500,
-      message: `Internal Server Error: ${ex}`
-    }
-    res.status(500);
-    return res.render('error', error);
+    render500ErrorPage(ex, res)
   }
 }
 
@@ -85,14 +89,9 @@ exports.deleteContacts = async (req, res) => {
     }
     return res.status(200).json({ msg: 'delete successfully!' });
   } catch (ex) {
-    const error = {
-      code: 500,
-      message: `Internal Server Error: ${ex}`,
-    }
-    res.status(500);
-    res.render('error', error);
-  }
+    render500ErrorPage(ex, res);
 
+  }
 }
 const validateData = (addReq) => {
   const {
@@ -155,11 +154,7 @@ exports.postAddContact = async (req, res) => {
     const createRes = await Contact.createContact(contactData);
     res.status(200).redirect('/contact');
   } catch (ex) {
-    const error = {
-      code: 500,
-      message: `Internal Server Error: ${ex}`,
-    }
-    res.render('error', error);
+    render500ErrorPage(ex, res);
   }
 };
 
@@ -199,15 +194,9 @@ exports.getEditContact = async (req, res) => {
     res.status(200)
     res.render('contact/edit-contact', { contact, allContact, owner });
   } catch (ex) {
-    const error = {
-      code: 500,
-      message: `Internal Server Error: ${ex}`,
-    }
-    res.status(500);
-    res.render('error', error);
+    render500ErrorPage(ex, res);
   }
 }
-
 exports.postEditContact = async (req, res) => {
   try {
     if (!req || !req.user) {
@@ -252,14 +241,9 @@ exports.postEditContact = async (req, res) => {
     const updateRes = await Contact.updateContactById(id, updateData);
     res.status(200).redirect('/contact');
   } catch (ex) {
-    const error = {
-      code: 500,
-      message: `Internal Server Error: ${ex}`,
-    }
-    res.status(500);
-    res.render('error', error);
-  }
-};
+    render500ErrorPage(ex, res);
+  };
+}
 
 exports.exportContacts = async (req, res) => {
   try {
@@ -291,14 +275,9 @@ exports.exportContacts = async (req, res) => {
     res.set('Content-Type', 'text/csv');
     res.status(200).send(csv);
   } catch (ex) {
-    const error = {
-      code: 500,
-      message: `Internal Server Error: ${ex}`,
-    }
-    res.status(500);
-    res.render('error', error);
-  }
-};
+    render500ErrorPage(ex, res);
+  };
+}
 
 exports.importContacts = async (req, res) => {
   try {
@@ -327,14 +306,9 @@ exports.importContacts = async (req, res) => {
       msg: 'import successfully!'
     })
   } catch (ex) {
-    const error = {
-      code: 500,
-      message: `Internal Server Error: ${ex}`,
-    }
-    res.status(500);
-    res.render('error', error);
-  }
-};
+    render500ErrorPage(ex, res);
+  };
+}
 
 exports.getContactByFullName = async (req, res) => {
   try {
@@ -351,7 +325,7 @@ exports.getContactByFullName = async (req, res) => {
     console.log('firstnamae', searchInput)
     const nameArray = searchInput.split(" ");
     const userId = req.user._id;
-    if(!searchInput || nameArray.length < 2) {
+    if (!searchInput || nameArray.length < 2) {
       return res.redirect('/contact')
     }
     if (nameArray.length === 2) {
@@ -362,7 +336,7 @@ exports.getContactByFullName = async (req, res) => {
         return res.render('contact/contact-list', { listContact: contact, Owner: userId });
       }
     }
-    
+
 
 
 
@@ -371,11 +345,6 @@ exports.getContactByFullName = async (req, res) => {
     })
 
   } catch (ex) {
-    const error = {
-      code: 500,
-      message: `Internal Server Error: ${ex}`
-    }
-    res.status(500);
-    return res.render('error', error);
+    render500ErrorPage(ex, res)
   }
 }
