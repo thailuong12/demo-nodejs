@@ -47,9 +47,9 @@ module.exports.getAllContacts = () => {
     });
 };
 
-module.exports.deleteContact = (id) => {
+module.exports.deleteContact = (id, userId) => {
     return new Promise((resolve, reject) => {
-        Contact.findByIdAndRemove({ _id: id }, (err, res) => {
+        Contact.findByIdAndRemove({ _id: id, userId }, (err, res) => {
             if (err) {
                 reject(err);
             }

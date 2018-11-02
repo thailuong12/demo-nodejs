@@ -80,9 +80,10 @@ exports.deleteContacts = async (req, res) => {
       res.render('error', error);
       return;
     }
+    const userId = req.user._id;
     for (const contactId of listContactNeedToBeDelete) {
       try {
-        await Contact.deleteContact(contactId);
+        await Contact.deleteContact(contactId, userId);
       } catch (ex) {
         console.log('Delete errors')
       }
