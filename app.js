@@ -154,7 +154,12 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   app.use((err, req, res, next) => {
     console.error(err);
-    res.status(500).send('Server Error');
+    const error = {
+      code: 500,
+      message: `Internal Server Error`
+    }
+    res.status(500);
+    return res.render('error', error);
   });
 }
 

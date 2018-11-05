@@ -1,15 +1,12 @@
 extends ../layout
 
 block content
-      button.btn.btn-danger(type='button', id='deleteContacts')
-        i.fa.fa-user-times
-        | Delete Checked Contacts
       .search
       form(method="POST", action="/contact/searchbyfullname")
-        .col-md-7
-          input.form-control(type="text", id="searchInput", name="searchInput")
-          input.btn.btn-success(type="submit" value="Search")
-          input(type='hidden', name='_csrf', value=_csrf)
+        .form-group.row
+          .col-md-6
+            input.form-control(type="text", id="searchInput", name="searchInput", placeholder= "Search By Full Name")
+            input(type='hidden', name='_csrf', value=_csrf)
       table.table.table-striped.table-dark
         thead
           tr
@@ -35,6 +32,10 @@ block content
             td 
               - const url = '/contact/edit?id='+ _id
               a.btn.btn-primary(href= url, role='button') Detail/Edit
+      .ulti  
+        button.btn.btn-danger(type='button', id='deleteContacts')
+          i.fa.fa-user-times
+          | Delete Checked Contacts
       a.btn.btn-primary.ulti(href='/contact/add', role='button')
         i.fa.fa-user-plus
         | Add A Contact
