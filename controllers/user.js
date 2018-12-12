@@ -70,7 +70,6 @@ exports.getSignup = (req, res) => {
       console.log('sadasd')
       return res.redirect('/');
     }
-    console.log('@@@@@')
     res.status(201)
     res.render('account/signup', {
       title: 'Create Account'
@@ -102,6 +101,7 @@ exports.postSignup = (req, res, next) => {
     email: req.body.email,
     password: req.body.password
   });
+  console.log('@@@', user)
 
   User.findOne({ email: req.body.email }, (err, existingUser) => {
     if (err) { return next(err); }
@@ -109,7 +109,7 @@ exports.postSignup = (req, res, next) => {
       req.flash('errors', { msg: 'Account with that email address already exists.' });
       return res.redirect('/signup');
     }
-    user.save((err) => {
+    user.save((err, u) => {
       if (err) { return next(err); }
       req.logIn(user, (err) => {
         if (err) {

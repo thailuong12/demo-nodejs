@@ -75,7 +75,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 1209600000 }, // two weeks in milliseconds
+  cookie: { maxAge: 1209600000, }, // two weeks in milliseconds
   store: new MongoStore({
     url: process.env.MONGODB_URI,
     autoReconnect: true,
@@ -99,6 +99,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use((req, res, next) => {
+  console.log('#####################', req.user)
   // After successful login, redirect back to the intended page
   if (!req.user
     && req.path !== '/login'
